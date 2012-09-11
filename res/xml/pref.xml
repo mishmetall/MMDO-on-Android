@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ListPreference 	xmlns:android="http://schemas.android.com/apk/res/android" 
+    					android:title="@string/menu_variant"
+                        android:summary="This preference allows to select variant"
+                        android:key="Variant"
+                        android:defaultValue="1"
+                        android:entries="@array/Variants"
+                        android:entryValues="@array/VarValues" />
+    <ListPreference 	xmlns:android="http://schemas.android.com/apk/res/android" 
+    					android:title="@string/menu_method"
+                        android:summary="This preference allows to select variant"
+                        android:key="Method"
+                        android:defaultValue="1"
+                        android:entries="@array/Methods"
+                        android:entryValues="@array/MethodsValues" />
+
+</PreferenceScreen>
