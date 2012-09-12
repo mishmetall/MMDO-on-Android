@@ -220,11 +220,11 @@ public class GraphView extends View
 						    		mPaint.setColor(BLUE);
 						    	if (color==3)
 						    		mPaint.setColor(Color.GREEN);
-						      int yOld = (int) (func.get(i).substitude((1.0 - zeroX)*k)/k);
+						      int yOld = (int) (func.get(i).substitute((1.0 - zeroX)*k)/k);
 						      int y=0;
 						      for (int x = 2; x < getWidth(); x++) 
 						    	  {
-						    		  y = (int) (func.get(i).substitude((x - zeroX)*k)/k);
+						    		  y = (int) (func.get(i).substitute((x - zeroX)*k)/k);
 						    		  g.drawLine(x-1, zeroY - yOld, x, zeroY - y, mPaint);
 						    		  yOld=y;
 						          }

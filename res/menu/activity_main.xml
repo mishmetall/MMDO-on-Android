@@ -1,3 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/preferences" android:title="@string/menu_preferences"></item>
+    <item android:title="@string/menu_method">
+        <menu>
+            <group 	android:id="@+id/methods"
+                   	android:checkableBehavior="single">
+                <item android:id="@+id/dichotomy"
+                        android:title="@string/dichotomy"
+                        android:checked="true" />
+                <item android:id="@+id/fibonacci"
+                        android:title="@string/fibonacci" />
+            </group>
+        </menu>
+    </item>
+    <item android:id="@+id/interval" android:title="@string/menu_interval"></item>
+    <item android:id="@+id/error" android:title="@string/menu_error"></item>
 </menu>

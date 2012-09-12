@@ -8,5 +8,5 @@ public interface IFunction
 	 * @return result of substitution
 	 * @throws ArithmeticException
 	 */
-	public double substitude (double argv ) throws ArithmeticException;
+	public double substitute (double argv ) throws ArithmeticException;
 }

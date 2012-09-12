@@ -1,10 +1,20 @@
 <resources>
-
+    
     <string name="app_name">MMIO</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">~~~ MMDO ~~~</string>
+    
     <string name="menu_settings">Settings</string>
     <string name="menu_variant">Variant</string>
-    <string name="title_activity_main">~~~         MMDO        ~~~</string>
     <string name="menu_method">Method</string>
-	<string name="menu_preferences">Preferences</string>
+    	<string name="dichotomy">Dichotomy</string>
+    	<string name="fibonacci">Fibonacci</string>
+	<string name="menu_error">Accuracy</string>
+		<string name="dialog_error">Accuracy</string>
+	<string name="menu_interval">Interval</string>
+		<string name="dialog_leftInterval">Left side</string>
+    	<string name="dialog_rightInterval">Right side</string>
+	<string name="no_solution_exception">Error! Verify error value.</string>
+	
+	<string name="dialog_ok">Ok</string>
+	<string name="dialog_cancel">Cancel</string>
 </resources>
