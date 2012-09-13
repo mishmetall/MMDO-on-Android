@@ -10,11 +10,14 @@
     	<string name="fibonacci">Fibonacci</string>
 	<string name="menu_error">Accuracy</string>
 		<string name="dialog_error">Accuracy</string>
+		<string name="error_default_value">0.01</string>
 	<string name="menu_interval">Interval</string>
 		<string name="dialog_leftInterval">Left side</string>
     	<string name="dialog_rightInterval">Right side</string>
+    	<string name="leftInterval_default_value">0.2</string>
+    	<string name="rightInterval_default_value">1.5</string>
 	<string name="no_solution_exception">Error! Verify error value.</string>
 	
-	<string name="dialog_ok">Ok</string>
+	<string name="dialog_ok">OK</string>
 	<string name="dialog_cancel">Cancel</string>
 </resources>

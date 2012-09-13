@@ -19,20 +19,20 @@ package com.mmio.lab;
 import edu.function.Function8;
 import edu.function.IFunction;
 import edu.solution.DichotomySolution;
+import edu.solution.FibonacciSolution;
 import edu.solution.NoEquationException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +47,12 @@ public class MMIOLabActivity extends Activity {
         super.onCreate(savedInstanceState);
        
         setContentView(R.layout.activity_main);
+        
+        Resources res = getResources();
+        leftInterval = Double.parseDouble(res.getString(R.string.leftInterval_default_value));
+        rightInterval = Double.parseDouble(res.getString(R.string.rightInterval_default_value));
+        error = Double.parseDouble(res.getString(R.string.error_default_value));
+        
         func = new Function8();
         ((GraphView)findViewById(R.id.graphView1)).addFunc(func);
         
@@ -66,11 +72,8 @@ public class MMIOLabActivity extends Activity {
 	{
 		// Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.dichotomy:
-	        	method = R.string.dichotomy;
-	            return true;
-	        case R.id.fibonacci:
-		        method = R.string.fibonacci;
+	        case R.id.method:
+	        	showDialog(METHODS_DIALOG);
 	            return true;
 	        case R.id.error:
 		        showDialog(ERROR_DIALOG);
@@ -89,12 +92,13 @@ public class MMIOLabActivity extends Activity {
 	@Override
 	protected void onStart()
 	{	
-		/*if (method == R.string.dichotomy)
+		switch (method)
 			{
-				DichotomySolution sol = new DichotomySolution();
+			case R.string.dichotomy:
+				DichotomySolution solD = new DichotomySolution();
 				try
 					{
-						sol.solve(func, leftInterval, rightInterval, error);
+						solD.solve(func, leftInterval, rightInterval, error);
 					} 
 				catch (NoEquationException e)
 					{
@@ -102,7 +106,23 @@ public class MMIOLabActivity extends Activity {
 						
 						e.printStackTrace();
 					}
-			}*/
+				break;
+			case R.string.fibonacci:
+				FibonacciSolution solF = new FibonacciSolution();
+				try
+					{
+						solF.solve(func, leftInterval, rightInterval, error);
+					} 
+				catch (NoEquationException e)
+					{
+						Toast.makeText(MMIOLabActivity.this, R.string.no_solution_exception, Toast.LENGTH_LONG).show();
+						
+						e.printStackTrace();
+					}
+				break;
+			default:
+				break;
+			}
 		super.onStart();
 	}
 
@@ -123,14 +143,21 @@ public class MMIOLabActivity extends Activity {
 			        .setView(textEntryView)
 			        .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int whichButton) {
-
-			                /* User clicked OK so do some stuff */
+			            	EditText leftIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.leftInterval_edit);
+			                leftInterval = Double.parseDouble(leftIntervalEditbox.getText().toString());
+			                
+			                EditText rightIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.rightInterval_edit);
+			                rightInterval = Double.parseDouble(rightIntervalEditbox.getText().toString());
 			            }
 			        })
 			        .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int whichButton) {
-
-			                /* User clicked cancel so do some stuff */
+			            	EditText leftIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.leftInterval_edit);
+			                leftIntervalEditbox.setText(leftInterval.toString());
+			                
+			                EditText rightIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.rightInterval_edit);
+			                rightIntervalEditbox.setText(rightInterval.toString());
+			                dialog.dismiss();
 			            }
 			        })
 			        .create();
@@ -142,14 +169,15 @@ public class MMIOLabActivity extends Activity {
 			        .setView(textEntryViewError)
 			        .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int whichButton) {
-
-			                /* User clicked OK so do some stuff */
+			            	EditText ErrorEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.error_edit);
+			                error = Double.parseDouble(ErrorEditbox.getText().toString());
 			            }
 			        })
 			        .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int whichButton) {
-
-			                /* User clicked cancel so do some stuff */
+			            	EditText ErrorEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.error_edit);
+			            	ErrorEditbox.setText(error.toString());
+			                dialog.dismiss();
 			            }
 			        })
 			        .create();
@@ -158,20 +186,18 @@ public class MMIOLabActivity extends Activity {
 		        .setTitle(R.string.menu_method)
 		        .setSingleChoiceItems(R.array.Methods, 0, new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
-
-		                /* User clicked on a radio button do some stuff */
-		            }
-		        })
-		        .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int whichButton) {
-
-		                /* User clicked Yes so do some stuff */
-		            }
-		        })
-		        .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int whichButton) {
-
-		                /* User clicked No so do some stuff */
+		            	switch (whichButton)
+						{
+						case 0:
+							method = R.string.dichotomy;
+							break;
+						case 1:
+							method = R.string.fibonacci;
+							break;
+						default:
+							break;
+						}
+		            	dialog.cancel();
 		            }
 		        })
 		       .create();
