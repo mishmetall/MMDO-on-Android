@@ -17,7 +17,9 @@
     	<string name="leftInterval_default_value">0.2</string>
     	<string name="rightInterval_default_value">1.5</string>
 	<string name="no_solution_exception">Error! Verify error value.</string>
+	<string name="iteration_table">Compare methods</string>
 	
 	<string name="dialog_ok">OK</string>
 	<string name="dialog_cancel">Cancel</string>
+	
 </resources>

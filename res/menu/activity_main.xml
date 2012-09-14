@@ -1,4 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/iterationTable" android:title="@string/iteration_table"></item>
     <item android:id="@+id/method" android:title="@string/menu_method"></item>
     <item android:id="@+id/interval" android:title="@string/menu_interval"></item>
     <item android:id="@+id/error" android:title="@string/menu_error"></item>
