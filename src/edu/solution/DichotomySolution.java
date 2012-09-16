@@ -1,9 +1,13 @@
 package edu.solution;
 
+import java.util.ArrayList;
+
 import edu.function.IFunction;
 
-public class DichotomySolution implements ISolution
+public class DichotomySolution implements ISolution, IIteraionTable
 {
+	private ArrayList<Double> iterTable = new ArrayList<Double>();
+	
 	@Override
 	public double solve(IFunction f, double leftInterval, double rightInterval,
 			double error) throws NoEquationException
@@ -17,6 +21,8 @@ public class DichotomySolution implements ISolution
 		
 		if (error <= 0)
 			throw new NoEquationException();
+		
+		iterTable.clear();
 		
 		double x1, f1, f2;
 		
@@ -33,8 +39,17 @@ public class DichotomySolution implements ISolution
 					{
 						rightInterval = x1;
 					}
+				iterTable.add((leftInterval + rightInterval)/2);
 			} while (rightInterval-leftInterval > error);
 		
 		return (leftInterval + rightInterval)/2;
+	}
+
+	@Override
+	public ArrayList<Double> getIterTable()
+	{
+		if (iterTable.size() < 1)
+			iterTable.add(0.0);
+		return iterTable;
 	}
 }

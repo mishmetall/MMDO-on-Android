@@ -141,7 +141,7 @@ public abstract class VersionedGestureDetector {
     private static class FroyoDetector extends EclairDetector {
         private ScaleGestureDetector mDetector;
         
-        public FroyoDetector(Context context) {
+        public FroyoDetector(Context context) { 
             mDetector = new ScaleGestureDetector(context,
                     new ScaleGestureDetector.SimpleOnScaleGestureListener() {
                 @Override public boolean onScale(ScaleGestureDetector detector) {

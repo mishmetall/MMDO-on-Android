@@ -18,6 +18,7 @@ package com.mmio.lab;
 
 import edu.function.Function8;
 import edu.function.IFunction;
+import edu.math.Round;
 import edu.solution.DichotomySolution;
 import edu.solution.FibonacciSolution;
 import edu.solution.NoEquationException;
@@ -25,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,9 +38,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MMIOLabActivity extends Activity {
 	
 	IFunction func;
+	DichotomySolution dichSol = new DichotomySolution();
+	FibonacciSolution fibSol = new FibonacciSolution();
+	Double resultDich = null;
+	Double resultFib = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -55,8 +62,10 @@ public class MMIOLabActivity extends Activity {
         
         func = new Function8();
         ((GraphView)findViewById(R.id.graphView1)).addFunc(func);
+        ((GraphView)findViewById(R.id.graphView1)).setFrom(leftInterval);
+        ((GraphView)findViewById(R.id.graphView1)).setTo(rightInterval);
         
-        ((TextView)findViewById(R.id.textView1)).setText("Result: \n x: \n y: \n type: min");
+        ((TextView)findViewById(R.id.result)).setText("Result: \n x: \n y: \n type: min");
     }
 
 	@Override	public boolean onCreateOptionsMenu(Menu menu)
@@ -81,6 +90,15 @@ public class MMIOLabActivity extends Activity {
 	        case R.id.interval:
 	        	showDialog(INTERVAL_DIALOG);
 	        	return true;
+	        case R.id.iterationTable:
+	        	Intent compTable = new Intent(MMIOLabActivity.this, CompareTable.class);
+	        	
+	        	compTable.putExtra("DICHOTOMY_TABLE", dichSol.getIterTable());
+	        	compTable.putExtra("DICHOTOMY_NAME", "Dichotomy");
+	        	compTable.putExtra("FIBONACCI_TABLE", fibSol.getIterTable());
+	        	compTable.putExtra("FIBONACCI_NAME", "Fibonacci");
+	        	startActivity(compTable);
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -92,38 +110,50 @@ public class MMIOLabActivity extends Activity {
 	@Override
 	protected void onStart()
 	{	
+		solve();
+		super.onStart();
+	}
+
+	private void solve()
+	{
+		try
+		{
+			resultDich = dichSol.solve(func, leftInterval, rightInterval, error);
+		} 
+		catch (NoEquationException e)
+		{
+			Toast.makeText(MMIOLabActivity.this, R.string.no_solution_exception, Toast.LENGTH_LONG).show();
+			
+			e.printStackTrace();
+		}
+		try
+		{
+			resultFib = fibSol.solve(func, leftInterval, rightInterval, error);
+		} 
+		catch (NoEquationException e)
+		{
+			Toast.makeText(MMIOLabActivity.this, R.string.no_solution_exception, Toast.LENGTH_LONG).show();
+			
+			e.printStackTrace();
+		}
+		
+		displayResult();
+	}
+
+	private void displayResult()
+	{
+		TextView res = (TextView) findViewById(R.id.result);
 		switch (method)
 			{
 			case R.string.dichotomy:
-				DichotomySolution solD = new DichotomySolution();
-				try
-					{
-						solD.solve(func, leftInterval, rightInterval, error);
-					} 
-				catch (NoEquationException e)
-					{
-						Toast.makeText(MMIOLabActivity.this, R.string.no_solution_exception, Toast.LENGTH_LONG).show();
-						
-						e.printStackTrace();
-					}
+				res.setText("Result: \n x:" + Round.roundResult(resultDich, 6) + " \n y:"  + Round.roundResult(func.substitute(resultDich),6) + " \n type: min");
 				break;
 			case R.string.fibonacci:
-				FibonacciSolution solF = new FibonacciSolution();
-				try
-					{
-						solF.solve(func, leftInterval, rightInterval, error);
-					} 
-				catch (NoEquationException e)
-					{
-						Toast.makeText(MMIOLabActivity.this, R.string.no_solution_exception, Toast.LENGTH_LONG).show();
-						
-						e.printStackTrace();
-					}
+				res.setText("Result: \n x:" + Round.roundResult(resultFib, 6) + " \n y:"  + Round.roundResult(func.substitute(resultFib),6) + " \n type: min");
 				break;
 			default:
 				break;
 			}
-		super.onStart();
 	}
 
 	private final int INTERVAL_DIALOG = 1;
@@ -145,9 +175,13 @@ public class MMIOLabActivity extends Activity {
 			            public void onClick(DialogInterface dialog, int whichButton) {
 			            	EditText leftIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.leftInterval_edit);
 			                leftInterval = Double.parseDouble(leftIntervalEditbox.getText().toString());
-			                
+			                ((GraphView)findViewById(R.id.graphView1)).setFrom(leftInterval);
+			             
 			                EditText rightIntervalEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.rightInterval_edit);
 			                rightInterval = Double.parseDouble(rightIntervalEditbox.getText().toString());
+			                ((GraphView)findViewById(R.id.graphView1)).setTo(rightInterval);
+			                
+			                solve();
 			            }
 			        })
 			        .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -171,6 +205,7 @@ public class MMIOLabActivity extends Activity {
 			            public void onClick(DialogInterface dialog, int whichButton) {
 			            	EditText ErrorEditbox = (EditText) ((Dialog)dialog).findViewById(R.id.error_edit);
 			                error = Double.parseDouble(ErrorEditbox.getText().toString());
+			                solve();
 			            }
 			        })
 			        .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -190,9 +225,11 @@ public class MMIOLabActivity extends Activity {
 						{
 						case 0:
 							method = R.string.dichotomy;
+							displayResult();
 							break;
 						case 1:
 							method = R.string.fibonacci;
+							displayResult();
 							break;
 						default:
 							break;

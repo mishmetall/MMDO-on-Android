@@ -1,9 +1,13 @@
 package edu.solution;
 
+import java.util.ArrayList;
+
 import edu.function.IFunction;
 
-public class FibonacciSolution implements ISolution
+public class FibonacciSolution implements ISolution,IIteraionTable
 {
+	private ArrayList<Double> iterTable = new ArrayList<Double>();
+	
 	/*
 	 * Fibonacci numbers until long-type maximum
 	 */
@@ -29,7 +33,7 @@ public class FibonacciSolution implements ISolution
 	@Override
 	public double solve(IFunction f, double leftInterval, double rightInterval,
 			double error) throws NoEquationException
-	{
+	{		
 		if (leftInterval>rightInterval)
 			{
 				double c = leftInterval;
@@ -39,6 +43,8 @@ public class FibonacciSolution implements ISolution
 		
 		if (error <= 0)
 			throw new NoEquationException();
+		
+		iterTable.clear();
 		
     	int j = 1, m;
 
@@ -75,9 +81,16 @@ public class FibonacciSolution implements ISolution
 	    		y1 = f.substitute(x1);
 	    	}
 	    	k++;
+	    	iterTable.add(x1);
     	}
     	while(k < m - 1);
     	
     	return x1; 	
+	}
+
+	@Override
+	public ArrayList<Double> getIterTable()
+	{
+		return iterTable;
 	}
 }
