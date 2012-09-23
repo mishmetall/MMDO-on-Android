@@ -142,6 +142,7 @@ public class GraphView extends View
 	public void setFrom(double from)
 	{
 		this.from = from;
+		this.refreshDrawableState();
 	}
 
 	public double getTo()
@@ -152,6 +153,7 @@ public class GraphView extends View
 	public void setTo(double to)
 	{
 		this.to = to;
+		this.refreshDrawableState();
 	}
 	
 	@Override
